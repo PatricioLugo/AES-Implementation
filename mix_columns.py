@@ -55,4 +55,3 @@ def mix_columns(state):
     return state
 
 mixed_state = mix_columns(example_state)
-print_state_hex(mixed_state)
