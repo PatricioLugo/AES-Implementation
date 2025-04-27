@@ -14,8 +14,11 @@ def main():
     ]
     
     int_key = [[int(byte, 16) for byte in row] for row in example_key]
-    for row in add_round_key(current_state, int_key):
-        print([f"{byte:02x}" for byte in row])
+
+    result = add_round_key(current_state, int_key)
+
+    for row in result:
+        print([f"0x{byte:02x}" for byte in row])
 
 def add_round_key(state, roundkey):
     result = []
@@ -29,6 +32,11 @@ def add_round_key(state, roundkey):
 
         result.append(new_row)
 
+    for i, row in enumerate(result):
+        for j, element in enumerate(row):
+            result[i][j] = int(element)
+
     return result
+
 if __name__ == "__main__":
     main()
