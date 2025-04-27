@@ -15,12 +15,12 @@ def main():
     
     int_key = [[int(byte, 16) for byte in row] for row in example_key]
 
-    result = add_round_key(current_state, int_key)
+    result = add_round_key_func(current_state, int_key)
 
     for row in result:
         print([f"0x{byte:02x}" for byte in row])
 
-def add_round_key(state, roundkey):
+def add_round_key_func(state, roundkey):
     result = []
 
     for row in range(4):

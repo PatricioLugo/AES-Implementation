@@ -7,7 +7,7 @@ def main():
     ]
 
     key = [format(x, '02x') for x in matrix_to_list(example_cipher_key)]
-    expanded_key_example = expand_key(key)
+    expanded_key_example = expand_key_func(key)
     round_keys = words_to_roundkeys(expanded_key_example)
 
     for i, rk in enumerate(round_keys):
@@ -42,7 +42,7 @@ rcon = [
     0x1b000000, 0x36000000
 ]
 
-def expand_key(key):
+def expand_key_func(key):
     expanded_key = [()] * 44
     for i in range(4):
         expanded_key[i] = (key[4 * i], key[4 * i + 1], key[4 * i + 2], key[4 * i + 3])
