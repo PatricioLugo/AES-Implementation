@@ -1,7 +1,13 @@
-example_state = [[0x19, 0xa0, 0x9a, 0xe9],
-                 [0x3d, 0xf4, 0xc6, 0xf8],
-                 [0xe3, 0xe2, 0x8d, 0x48],
-                 [0xbe, 0x2b, 0x2a, 0x08]]
+def main():
+
+    example_state = [[0x19, 0xa0, 0x9a, 0xe9],
+                    [0x3d, 0xf4, 0xc6, 0xf8],
+                    [0xe3, 0xe2, 0x8d, 0x48],
+                    [0xbe, 0x2b, 0x2a, 0x08]]
+    
+    shifted_state =shiftrows(example_state)
+    formatted_state = [[hex(byte) for byte in row] for row in shifted_state]
+    print(formatted_state)
 
 def shiftrows (state):
     #Start state 
@@ -25,7 +31,5 @@ def shiftrows (state):
 
     return state
 
-shifted_state =shiftrows(example_state)
-formatted_state = [[hex(byte) for byte in row] for row in shifted_state]
-print(formatted_state)
-
+if __name__ == "__main__":
+    main()
