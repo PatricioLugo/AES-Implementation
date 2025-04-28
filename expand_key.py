@@ -10,6 +10,7 @@ def main():
     expanded_key_example = expand_key_func(key)
     round_keys = words_to_roundkeys(expanded_key_example)
 
+    # No necesario (visualizar ejemplo)
     for i, rk in enumerate(round_keys):
         print(f"Round {i} Key:")
         for row in rk:
@@ -106,6 +107,14 @@ def words_to_roundkeys(w):
                 matrix_row.append(w[i + col][row])
             matrix.append(matrix_row)
         round_keys.append(matrix)
+    round_keys = [
+    [
+        [int(value, 16) for value in inner_list]
+        for inner_list in outer_list
+    ]
+    for outer_list in round_keys
+    ]
+
     return round_keys
 
 if __name__ == "__main__":
