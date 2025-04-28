@@ -10,7 +10,7 @@ from inverse_mix_columns import inverse_mixcolumns
 def cipher(input_bytes, expanded_key):
     state = input_bytes
     state = add_round_key_func(state, expanded_key[0])
-    for i in range(1, 10):
+    for i in range(1, 9):
         state = subbytes(state)
         state = shiftrows(state)
         state = mix_columns(state)
@@ -18,7 +18,7 @@ def cipher(input_bytes, expanded_key):
     
     state = subbytes(state)
     state = shiftrows(state)
-    state = add_round_key_func(state, expanded_key[160:176])
+    state = add_round_key_func(state, expanded_key[10])
 
     return state
     
@@ -36,6 +36,17 @@ def read_file(filename):
             unciphered_blocks.append(block)
     return unciphered_blocks
 
+def ask_for_key():
+    key = [["", "", "", ""],
+           ["", "", "", ""],
+           ["", "", "", ""],
+           ["", "", "", ""]]
+    for i in range(len(key)):          
+        for j in range(len(key[i])):
+            key_value = input("Ingresa un valor en hexadecimal: ")
+            key[i][j] = key_value
+
+    return key
 
 def main():
     print('Bienvenido al programa de encriptación y decriptación usando AES\n')
@@ -43,11 +54,16 @@ def main():
         print('1. Cifrado')
         print('2. Descifrado')
         selection = int(input('Selecciona la opción deseada: '))
-        if selection == 1:
-            filename = input('\nDame el nombre del archivo a cifrar: ')
-            #Llamada a función para cifrar
-        elif selection == 2:
-            filename = input('\nDame el nombre del archivo a descifrar: ')
-            #Llamada a función a descifrar
+        match selection:
+            case 1:
+                filename = input('\nDame el nombre del archivo a cifrar: ')
+                # LLamada a función de cifrado
+                key = ask_for_key()
+            case 2:
+                filename = input('\nDame el nombre del archivo a descifrar: ')
+                # Llamada a función de descifrado
+            case _:
+                print("ERROR: Ingresa un número válido.")
+            
 
 print(read_file("example.txt"))
