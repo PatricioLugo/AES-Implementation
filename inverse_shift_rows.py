@@ -1,9 +1,14 @@
-example_state = [[0x19, 0xa0, 0x9a, 0xe9], 
-                 [0xf4, 0xc6, 0xf8, 0x3d], 
-                 [0x8d, 0x48, 0xe3, 0xe2], 
-                 [0x8, 0xbe, 0x2b, 0x2a]]
+def main(): 
+    example_state = [['0x19', '0xa0', '0x9a', '0xe9'], 
+                 ['0xf4', '0xc6', '0xf8', '0x3d'], 
+                 ['0x8d', '0x48', '0xe3', '0xe2'], 
+                 ['0x8', '0xbe', '0x2b', '0x2a']]
+    
+    shifted_inv_state = inv_shiftrows(example_state)
+    print(shifted_inv_state)
 
-def inv_shiftrows(state):    
+def inv_shiftrows(state):  
+    state = [[int(byte, 16) for byte in row] for row in state]  
     # Start state 
     # [[0x19, 0xa0, 0x9a, 0xe9],   
     #  [0xf4, 0xc6, 0xf8, 0x3d],    
@@ -27,6 +32,6 @@ def inv_shiftrows(state):
 
     return state
 
-shifted_inv_state = inv_shiftrows(example_state)
-formatted_inv_state = [[hex(byte) for byte in row] for row in shifted_inv_state]
-print(formatted_inv_state)
+if __name__ == "__main__": 
+    main()
+    
