@@ -7,20 +7,20 @@ def main():
     ]
 
     example_key = [
-        ['2b', '28', 'ab', '09'],
-        ['7e', 'ae', 'f7', 'cf'],
-        ['15', 'd2', '15', '4f'],
-        ['16', 'a6', '88', '3c']
+        ['0x2b', '0x28', '0xab', '0x09'],
+        ['0x7e', '0xae', '0xf7', '0xcf'],
+        ['0x15', '0xd2', '0x15', '0x4f'],
+        ['0x16', '0xa6', '0x88', '0x3c']
     ]
-    
-    int_key = [[int(byte, 16) for byte in row] for row in example_key]
 
-    result = add_round_key_func(current_state, int_key)
+    result = add_round_key_func(current_state, example_key)
 
     for row in result:
         print([f"0x{byte:02x}" for byte in row])
 
 def add_round_key_func(state, roundkey):
+    roundkey = [[int(byte, 16) for byte in row] for row in roundkey]
+
     result = []
 
     for row in range(4):
