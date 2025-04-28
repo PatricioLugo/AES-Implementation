@@ -109,12 +109,12 @@ def words_to_roundkeys(w):
         round_keys.append(matrix)
     round_keys = [
     [
-        [int(value, 16) for value in inner_list]
+        [hex(int(value, 16)) for value in inner_list]
         for inner_list in outer_list
     ]
     for outer_list in round_keys
     ]
-
+    
     return round_keys
 
 if __name__ == "__main__":
