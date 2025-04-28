@@ -18,7 +18,7 @@ def cipher(input_bytes, expanded_key):
     
     state = subbytes(state)
     state = shiftrows(state)
-    state = add_round_key_func(state, expanded_key[10])
+    state = add_round_key_func(state, expanded_key[9])
 
     return state
     
