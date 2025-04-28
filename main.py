@@ -9,12 +9,12 @@ from inverse_mix_columns import inverse_mixcolumns
 
 def cipher(input_bytes, expanded_key):
     state = input_bytes
-    state = add_round_key_func(state, expanded_key[0:16])
+    state = add_round_key_func(state, expanded_key[0])
     for i in range(1, 10):
         state = subbytes(state)
         state = shiftrows(state)
         state = mix_columns(state)
-        state = add_round_key_func(state, expanded_key[i*16:(i*16+15)])
+        state = add_round_key_func(state, expanded_key[i])
     
     state = subbytes(state)
     state = shiftrows(state)
