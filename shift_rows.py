@@ -9,7 +9,7 @@ def main():
     formatted_state = [[hex(byte) for byte in row] for row in shifted_state]
     print(formatted_state)
 
-def shiftrows (state):
+def shiftrows(state):
     #Start state 
     # [[0x19, 0xa0, 0x9a, 0xe9],
       #[0x3d, 0xf4, 0xc6, 0xf8],
