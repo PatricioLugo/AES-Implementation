@@ -6,7 +6,12 @@ def main():
                     ['0xbe', '0x2b', '0x2a', '0x08']]
     
     shifted_state =shiftrows(example_state)
-    print(shifted_state)
+
+    mix_col_output = []
+    for i in range(len(shifted_state[0])):
+        for j in range(len(shifted_state)):
+            mix_col_output.append(shifted_state[j][i])
+    print(mix_col_output)
 
 def shiftrows(state):
     state = [[int(byte, 16) for byte in row] for row in state]
@@ -35,3 +40,17 @@ def shiftrows(state):
 if __name__ == "__main__":
     main()
 
+
+#Original output matrix 
+
+#   [['0x19', '0xa0', '0x9a', '0xe9'],
+    #['0x3d', '0xf4', '0xc6', '0xf8'],
+    #['0xe3', '0xe2', '0x8d', '0x48'],
+    #['0xbe', '0x2b', '0x2a', '0x08']]
+
+#Transformed output matrix 
+
+#   ['0x19', '0x3d', '0xe3', '0xbe',      First column --> First row 
+#   '0xa0', '0xf4', '0xe2', '0x2b',      Second column --> Second row 
+#   '0x9a', '0xc6', '0x8d', '0x2a',      Third column --> Third row
+#   '0xe9', '0xf8', '0x48', '0x08']     Fourth column --> Fourth row
