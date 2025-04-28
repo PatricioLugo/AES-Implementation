@@ -59,6 +59,9 @@ def main():
                 filename = input('\nDame el nombre del archivo a cifrar: ')
                 # LLamada a función de cifrado
                 key = ask_for_key()
+                expanded_key = expand_key_func(key)
+                cipher(read_file(filename), expanded_key)
+                
             case 2:
                 filename = input('\nDame el nombre del archivo a descifrar: ')
                 # Llamada a función de descifrado
