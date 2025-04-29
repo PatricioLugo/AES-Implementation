@@ -13,17 +13,12 @@ def main():
         ['0x16', '0xa6', '0x88', '0x3c']
     ]
 
-    result = add_round_key_func(current_state, example_key, 0)
+    result = add_round_key_func(current_state, example_key)
 
     for row in result:
         print([f"0x{byte:02x}" for byte in row])
 
-def add_round_key_func(state, roundkey, type):
-    match type:
-        case 0:
-            roundkey = [[int(byte, 16) for byte in row] for row in roundkey] 
-        case 1:
-            pass  
+def add_round_key_func(state, roundkey):
 
     result = []
 
