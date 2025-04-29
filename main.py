@@ -31,6 +31,21 @@ def cipher_block(input_bytes, expanded_key):
     state = add_round_key_func(state, expanded_key[9])
     return state
 
+def decipher_block(input_bytes, expanded_key):
+    state = input_bytes
+    state = add_round_key_func(state, expanded_key[9])      # Add round key 10
+    for i in range(8, 0, -1):       # Inverse iteration 
+        state = inv_shiftrows(state)
+        state = inverse_subbytes(state)
+        state = add_round_key_func(state, expanded_key[9-i])    
+        state = inverse_mixcolumns(state)
+    
+    state = inv_shiftrows(state)
+    state = inverse_subbytes(state)
+    state = add_round_key_func(state, expanded_key[0])   #Add round key 1  
+    return state
+
+
 def matrix_xor(a, b):
     a_array = np.array(a)
     b_array = np.array(b)
@@ -55,6 +70,24 @@ def cipher(input_bytes, expanded_key):
         ciphered_blocks.append(encrypted_block)
         previous_block = encrypted_block
     return b"".join(ciphered_blocks)
+
+
+def decipher(input_bytes, expanded_key): 
+    unciphered_blocks = input_bytes
+    deciphered_blocks = []
+    i_vec = [
+    [0x00, 0x00, 0x00, 0x00],
+    [0x00, 0x00, 0x00, 0x00],
+    [0x00, 0x00, 0x00, 0x00],
+    [0x00, 0x00, 0x00, 0x00]
+]
+    previous_block = i_vec
+    for block in unciphered_blocks:
+        decrypted_block = decipher_block(block.tolist(), expanded_key)
+        xored_block = matrix_xor(decrypted_block, previous_block)
+        deciphered_blocks.append(xored_block)
+        previous_block = block
+    return b"".join(deciphered_blocks)
 
 def read_file(filename):
     unciphered_blocks = []
@@ -96,7 +129,12 @@ def main():
                 
             case 2:
                 filename = input('\nDame el nombre del archivo a descifrar: ')
-                # Llamada a función de descifrado
+                # LLamada a función de descifrado
+                key = ask_for_key()
+                expanded_key = expand_key_func(key)
+                result = decipher(read_file(filename), expanded_key)
+                write_ciphered_blocks(result, "output.pdf")
+                
             case _:
                 print("ERROR: Ingresa un número válido.")   
 
