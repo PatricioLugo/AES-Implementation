@@ -17,16 +17,16 @@ def write_ciphered_blocks(blocks, filename):
 
 def cipher_block(input_bytes, expanded_key):
     state = input_bytes
-    state = add_round_key_func(state, expanded_key[0], 0)
+    state = add_round_key_func(state, expanded_key[0])
     for i in range(1, 9):
         state = subbytes(state)
         state = shiftrows(state)
         state = mix_columns(state)
-        state = add_round_key_func(state, expanded_key[i], 1)
+        state = add_round_key_func(state, expanded_key[i])
     
     state = subbytes(state)
     state = shiftrows(state)
-    state = add_round_key_func(state, expanded_key[9], 1)
+    state = add_round_key_func(state, expanded_key[9])
     return state
 
 def xor_bytes(a, b):
