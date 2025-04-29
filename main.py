@@ -7,6 +7,14 @@ from inverse_shift_rows import inv_shiftrows
 from mix_columns import mix_columns
 from inverse_mix_columns import inverse_mixcolumns
 
+def write_ciphered_blocks(blocks, filename):
+    with open(filename, 'wb') as file:
+        for block in blocks:
+            for row in block:
+                for byte_str in row:
+                    byte_value = int(byte_str, 16)
+                    file.write(byte_value.to_bytes(1, 'big'))
+
 def cipher_block(input_bytes, expanded_key):
     state = input_bytes
     state = add_round_key_func(state, expanded_key[0], 0)
@@ -59,7 +67,9 @@ def ask_for_key():
         for j in range(len(key[i])):
             key_value = input("Ingresa un valor en hexadecimal: ")
             key[i][j] = key_value
-
+    for i in range(len(key)):
+        for j in range(len(key[i])):
+            int(key[i][j], 16)
     return key
 
 def main():
@@ -73,8 +83,10 @@ def main():
                 filename = input('\nDame el nombre del archivo a cifrar: ')
                 # LLamada a función de cifrado
                 key = ask_for_key()
+                print(key)
                 expanded_key = expand_key_func(key)
-                cipher(read_file(filename), expanded_key)
+                result = cipher(read_file(filename), expanded_key) 
+                write_ciphered_blocks(result, "output.aes")
                 
             case 2:
                 filename = input('\nDame el nombre del archivo a descifrar: ')
