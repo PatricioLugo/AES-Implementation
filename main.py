@@ -59,17 +59,10 @@ def read_file(filename):
     return unciphered_blocks
 
 def ask_for_key():
-    key = [["", "", "", ""],
-           ["", "", "", ""],
-           ["", "", "", ""],
-           ["", "", "", ""]]
-    for i in range(len(key)):
-        for j in range(len(key[i])):
-            key_value = input("Ingresa un valor en hexadecimal: ")
-            key[i][j] = key_value
-    for i in range(len(key)):
-        for j in range(len(key[i])):
-            int(key[i][j], 16)
+    key = []
+    for i in range(16):
+        key_value = input("Ingresa un valor en hexadecimal: ")
+        key[i] = key_value
     return key
 
 def main():
