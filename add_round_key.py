@@ -26,7 +26,8 @@ def add_round_key_func(state, roundkey):
         new_row = []
 
         for col in range(4):
-            xor_byte = state[row][col] ^ roundkey[row][col]
+            key_byte = int(roundkey[row][col], 16) if isinstance(roundkey[row][col], str) else roundkey[row][col]
+            xor_byte = state[row][col] ^ key_byte
             new_row.append(xor_byte)
 
         result.append(new_row)

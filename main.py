@@ -6,6 +6,7 @@ from shift_rows import shiftrows
 from inverse_shift_rows import inv_shiftrows
 from mix_columns import mix_columns
 from inverse_mix_columns import inverse_mixcolumns
+import numpy as np
 
 def write_ciphered_blocks(blocks, filename):
     with open(filename, 'wb') as file:
@@ -17,6 +18,7 @@ def write_ciphered_blocks(blocks, filename):
 
 def cipher_block(input_bytes, expanded_key):
     state = input_bytes
+    print(expanded_key)
     state = add_round_key_func(state, expanded_key[0])
     for i in range(1, 9):
         state = subbytes(state)
@@ -29,17 +31,27 @@ def cipher_block(input_bytes, expanded_key):
     state = add_round_key_func(state, expanded_key[9])
     return state
 
-def xor_bytes(a, b):
-    return bytes(x ^ y for x, y in zip(a, b))
+def matrix_xor(a, b):
+    a_array = np.array(a)
+    b_array = np.array(b)
+    if a_array.shape != b_array.shape:
+        print("Matrices must have the same dimensions for XOR operation.")
+        return None
+    return np.bitwise_xor(a_array, b_array)
 
 def cipher(input_bytes, expanded_key):
     unciphered_blocks = input_bytes
     ciphered_blocks = []
-    i_vec = bytes([0]*16)
+    i_vec = [
+    [0x00, 0x00, 0x00, 0x00],
+    [0x00, 0x00, 0x00, 0x00],
+    [0x00, 0x00, 0x00, 0x00],
+    [0x00, 0x00, 0x00, 0x00]
+]
     previous_block = i_vec
     for block in unciphered_blocks:
-        xored_block = xor_bytes(block, previous_block)
-        encrypted_block = cipher_block(xored_block, expanded_key)
+        xored_block = matrix_xor(block, previous_block)
+        encrypted_block = cipher_block(xored_block.tolist(), expanded_key)
         ciphered_blocks.append(encrypted_block)
         previous_block = encrypted_block
     return b"".join(ciphered_blocks)
@@ -65,10 +77,7 @@ def ask_for_key():
         key.append(key_value)
     return key
 
-example = [[0x32, 0x88, 0x31, 0xe0], 
-           [0x43, 0x5a, 0x31, 0x37], 
-           [0xf6, 0x30, 0x98, 0x07],
-           [0xa8, 0x8d, 0xa2, 0x34]]
+
 
 def main():
     print('Bienvenido al programa de encriptación y decriptación usando AES\n')
@@ -82,7 +91,7 @@ def main():
                 # LLamada a función de cifrado
                 key = ask_for_key()     
                 expanded_key = expand_key_func(key)
-                result = cipher(example, expanded_key) #read_file(filename)
+                result = cipher(read_file(filename), expanded_key) #read_file(filename)
                 write_ciphered_blocks(result, "output.aes")
                 
             case 2:
