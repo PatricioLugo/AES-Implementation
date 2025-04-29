@@ -7,7 +7,7 @@ from inverse_shift_rows import inv_shiftrows
 from mix_columns import mix_columns
 from inverse_mix_columns import inverse_mixcolumns
 
-def cipher(input_bytes, expanded_key):
+def cipher_block(input_bytes, expanded_key):
     state = input_bytes
     state = add_round_key_func(state, expanded_key[0])
     for i in range(1, 9):
@@ -19,19 +19,33 @@ def cipher(input_bytes, expanded_key):
     state = subbytes(state)
     state = shiftrows(state)
     state = add_round_key_func(state, expanded_key[9])
-
     return state
-    
-def read_file(filename): 
+
+def xor_bytes(a, b):
+    return bytes(x ^ y for x, y in zip(a, b))
+
+def cipher(input_bytes, expanded_key):
+    unciphered_blocks = input_bytes
+    ciphered_blocks = []
+    i_vec = bytes([0]*16)
+    previous_block = i_vec
+    for block in unciphered_blocks:
+        xored_block = xor_bytes(block, previous_block)
+        encrypted_block = cipher_block(xored_block, expanded_key)
+        ciphered_blocks.append(encrypted_block)
+        previous_block = encrypted_block
+    return b"".join(ciphered_blocks)
+
+def read_file(filename):
     unciphered_blocks = []
     with open(filename, 'rb') as f:
-        while True: 
+        while True:
             block = f.read(16)
             if not block:
                 break
             if len(block) < 16:
                 padding_needed = 16 - len(block)
-                if padding_needed >= 1: 
+                if padding_needed >= 1:
                     block += bytes([0x01]) + bytes([0x00] * (padding_needed - 1))
             unciphered_blocks.append(block)
     return unciphered_blocks
@@ -41,7 +55,7 @@ def ask_for_key():
            ["", "", "", ""],
            ["", "", "", ""],
            ["", "", "", ""]]
-    for i in range(len(key)):          
+    for i in range(len(key)):
         for j in range(len(key[i])):
             key_value = input("Ingresa un valor en hexadecimal: ")
             key[i][j] = key_value
@@ -66,7 +80,6 @@ def main():
                 filename = input('\nDame el nombre del archivo a descifrar: ')
                 # Llamada a función de descifrado
             case _:
-                print("ERROR: Ingresa un número válido.")
-            
+                print("ERROR: Ingresa un número válido.")   
 
-print(read_file("example.txt"))
+main()

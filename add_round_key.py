@@ -19,7 +19,7 @@ def main():
         print([f"0x{byte:02x}" for byte in row])
 
 def add_round_key_func(state, roundkey):
-    roundkey = [[int(byte, 16) for byte in row] for row in roundkey]
+    roundkey = [[int(byte, 16) for byte in row] for row in roundkey]   
 
     result = []
 

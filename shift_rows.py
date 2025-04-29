@@ -14,7 +14,6 @@ def main():
     print(mix_col_output)
 
 def shiftrows(state):
-    state = [[int(byte, 16) for byte in row] for row in state]
 
     #Start state 
     # [[0x19, 0xa0, 0x9a, 0xe9],
