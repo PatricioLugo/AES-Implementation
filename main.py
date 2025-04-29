@@ -62,8 +62,13 @@ def ask_for_key():
     key = []
     for i in range(16):
         key_value = input("Ingresa un valor en hexadecimal: ")
-        key[i] = key_value
+        key.append(key_value)
     return key
+
+example = [[0x32, 0x88, 0x31, 0xe0], 
+           [0x43, 0x5a, 0x31, 0x37], 
+           [0xf6, 0x30, 0x98, 0x07],
+           [0xa8, 0x8d, 0xa2, 0x34]]
 
 def main():
     print('Bienvenido al programa de encriptación y decriptación usando AES\n')
@@ -75,10 +80,9 @@ def main():
             case 1:
                 filename = input('\nDame el nombre del archivo a cifrar: ')
                 # LLamada a función de cifrado
-                key = ask_for_key()
-                print(key)
+                key = ask_for_key()     
                 expanded_key = expand_key_func(key)
-                result = cipher(read_file(filename), expanded_key) 
+                result = cipher(example, expanded_key) #read_file(filename)
                 write_ciphered_blocks(result, "output.aes")
                 
             case 2:
