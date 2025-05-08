@@ -27,7 +27,20 @@ def read_file(filename):
             unciphered_blocks.append(block)
         return unciphered_blocks
 #Función para pedir la Key
-
+def ask_for_key():
+    key = np.zeros(16, dtype=np.uint8)
+    for i in range(16):
+        while True:
+            try:
+                byte = int(input(f"Ingresa el byte #{i + 1} de la clave (0-255): "))
+                if 0 <= byte <= 255:
+                    key[i] = byte
+                    break
+                else:
+                    print("El byte debe estar entre 0 y 255.")
+            except ValueError:
+                print("El byte debe ser un número entero.")
+    return key
 #Función para exportar un archivo .aes
 
 #Función para cifrar un bloque
