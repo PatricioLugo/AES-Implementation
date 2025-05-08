@@ -1,7 +1,7 @@
 '''
 INPUT: Numpy array 4x4 (state matrix) of integers from sub_bytes
 
-OUTPUT: Numpy array 4x4 (state matrix) of integers 
+OUTPUT: Numpy array 1x16 (flat numpy array) of integers to enter mix columns
 '''
 
 import numpy as np
