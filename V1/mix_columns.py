@@ -54,4 +54,4 @@ def mix_columns(state):
         state[i+3] = M2[a3] ^ M3[a0] ^ a1 ^ a2
     return state
 
-mixed_state = mix_columns(example_state)
+mixed_state = mix_columns(example_state)    

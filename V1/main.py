@@ -1,11 +1,11 @@
-from add_round_key import add_round_key_func
-from expand_key import expand_key_func
-from sub_bytes import subbytes
-from inverse_sub_bytes import inverse_subbytes
-from shift_rows import shiftrows
-from inverse_shift_rows import inv_shiftrows
-from mix_columns import mix_columns
-from inverse_mix_columns import inverse_mixcolumns
+from V1.add_round_key import add_round_key_func
+from V1.expand_key import expand_key_func
+from V1.sub_bytes import subbytes
+from V1.inverse_sub_bytes import inverse_subbytes
+from V1.shift_rows import shiftrows
+from V1.inverse_shift_rows import inv_shiftrows
+from V1.mix_columns import mix_columns
+from V1.inverse_mix_columns import inverse_mixcolumns
 import numpy as np
 
 def write_ciphered_blocks(blocks, filename):
@@ -66,7 +66,7 @@ def cipher(input_bytes, expanded_key):
     previous_block = i_vec
     for block in unciphered_blocks:
         xored_block = matrix_xor(block, previous_block)
-        encrypted_block = cipher_block(xored_block.tolist(), expanded_key)
+        encrypted_block = cipher_block(xored_block, expanded_key)
         ciphered_blocks.append(encrypted_block)
         previous_block = encrypted_block
     return b"".join(ciphered_blocks)
