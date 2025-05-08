@@ -4,6 +4,19 @@ INPUT: 128-bit key (16 bytes) in decimal format as a list of integers.
 OUTPUT: Expanded key as a 2D numpy array (a matrix where each list is a word).
 '''
 
+# Usage example in main function:
+def main():
+    key = np.array([
+        43, 64, 171, 9,
+        126, 174, 247, 207,
+        21, 210, 21, 79,
+        22, 166, 136, 60
+    ], dtype=np.uint8)
+
+    expanded_key = key_expansion(key)
+    print("Expanded Key:")
+    print(expanded_key)
+
 import numpy as np
 
 s_box = np.array([
@@ -60,13 +73,5 @@ def key_expansion(key, Nk=4, Nr=10):
 
     return W
 
-key = np.array([
-    43, 64, 171, 9,
-    126, 174, 247, 207,
-    21, 210, 21, 79,
-    22, 166, 136, 60
-], dtype=np.uint8)
-
-expanded_key = key_expansion(key)
-print("Expanded Key:")
-print(expanded_key)
+if __name__ == "__main__":
+    main()
