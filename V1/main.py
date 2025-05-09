@@ -47,29 +47,21 @@ def decipher_block(input_bytes, expanded_key):
 
 
 def matrix_xor(a, b):
-    a_array = np.array(a)
-    b_array = np.array(b)
-    if a_array.shape != b_array.shape:
+    if a.shape != b.shape:
         print("Matrices must have the same dimensions for XOR operation.")
         return None
-    return np.bitwise_xor(a_array, b_array)
+    return np.bitwise_xor(a, b)
 
 def cipher(input_bytes, expanded_key):
-    unciphered_blocks = input_bytes
     ciphered_blocks = []
-    i_vec = [
-    [0x00, 0x00, 0x00, 0x00],
-    [0x00, 0x00, 0x00, 0x00],
-    [0x00, 0x00, 0x00, 0x00],
-    [0x00, 0x00, 0x00, 0x00]
-]
+    i_vec = np.zeros(16, dtype = np.uint8)
     previous_block = i_vec
-    for block in unciphered_blocks:
+    for block in input_bytes:
         xored_block = matrix_xor(block, previous_block)
         encrypted_block = cipher_block(xored_block, expanded_key)
         ciphered_blocks.append(encrypted_block)
         previous_block = encrypted_block
-    return b"".join(ciphered_blocks)
+    return b"".join(block.tobytes() for block in ciphered_blocks)
 
 
 def decipher(input_bytes, expanded_key): 
@@ -122,7 +114,7 @@ def main():
             case 1:
                 filename = input('\nDame el nombre del archivo a cifrar: ')
                 # LLamada a función de cifrado
-                key = ask_for_key()     
+                key = ask_for_key()
                 expanded_key = expand_key_func(key)
                 result = cipher(read_file(filename), expanded_key) #read_file(filename)
                 write_ciphered_blocks(result, "output.aes")

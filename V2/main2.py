@@ -14,6 +14,7 @@ import numpy as np
 Falta terminar de crear funciones en main.
 '''
 ## Función para leer el archivo
+#Retorna 2D numpy array de bloques de 16 bytes en formato entero.
 def read_file(filename):
     unciphered_blocks = []
     with open(filename, 'rb') as f:
@@ -26,28 +27,58 @@ def read_file(filename):
                 if padding_needed >= 1:
                     block += bytes([0x01]) + bytes([0x00] * (padding_needed - 1))
             unciphered_blocks.append(block)
-        return unciphered_blocks
+    print(unciphered_blocks[0])
+    return np.array([np.frombuffer(bytes(b), dtype=np.uint8) for b in unciphered_blocks], dtype=np.uint8)
+    
 #Función para pedir la Key
 def ask_for_key():
     key = np.zeros(16, dtype=np.uint8)
     for i in range(16):
         while True:
             try:
-                byte = int(input(f"Ingresa el byte #{i + 1} de la clave (0-255): "))
-                if 0 <= byte <= 255:
-                    key[i] = byte
-                    break
-                else:
-                    print("El byte debe estar entre 0 y 255.")
+                byte = input(f"Ingresa el byte #{i + 1} de la clave (en hex, por ejemplo '2b'): ")
+                key[i] = int(byte, 16)
+                break
             except ValueError:
-                print("El byte debe ser un número entero.")
+                print("El byte debe ser un número hexadecimal válido (por ejemplo: 2b).")
     return key
+
 #Función para exportar un archivo .aes
 
 #Función para cifrar un bloque
+def cipher_block(input_bytes, expanded_key):
+    state = input_bytes
+    print(expanded_key)
+    state = add_round_key(state, expanded_key[0])
+    for i in range(1, 10):
+        state = sub_bytes(state)
+        state = shift_rows(state)
+        state = mix_columns(state)
+        state = add_round_key(state, expanded_key[i])
+    
+    state = sub_bytes(state)
+    state = shift_rows(state)
+    state = add_round_key(state, expanded_key[9])
+    return state
+
+#Función para hacer XOR entre dos bloques de 16 bytes
+def matrix_xor(a, b):
+    if a.shape != b.shape:
+        print("Matrices must have the same dimensions for XOR operation.")
+        return None
+    return np.bitwise_xor(a, b)
 
 #Función para cifrar en modo CBC
-
+def cipher(input_bytes, expanded_key):
+    ciphered_blocks = []
+    i_vec = np.zeros(16, dtype = np.uint8)
+    previous_block = i_vec
+    for block in input_bytes:
+        xored_block = matrix_xor(block, previous_block)
+        encrypted_block = cipher_block(xored_block, expanded_key)
+        ciphered_blocks.append(encrypted_block)
+        previous_block = encrypted_block
+    return b"".join(block.tobytes() for block in ciphered_blocks)
 #Función para descifrar un bloque
 
 #Función para descifrar en modo CBC

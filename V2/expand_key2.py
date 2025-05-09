@@ -1,7 +1,7 @@
 '''
 INPUT: 128-bit key (16 bytes) in decimal format as a list of integers.
 
-OUTPUT: Expanded key as a 2D numpy array (a matrix where each list is a word).
+OUTPUT: Expanded key as a 2D numpy array (a matrix where each list is a word (4 bytes list))
 '''
 
 # Usage example in main function:
