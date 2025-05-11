@@ -14,10 +14,10 @@ def main():
     ], dtype=np.uint8)
 
     key = np.array([
-        [0x2b, 0x28, 0xab, 0x09],
-        [0x7e, 0xae, 0xf7, 0xcf],
-        [0x15, 0xd2, 0x15, 0x4f],
-        [0x16, 0xa6, 0x88, 0x3c]
+        [0x2b, 0x7e, 0x15, 0x16],
+        [0x28, 0xae, 0xd2, 0xa6],
+        [0xab, 0xf7, 0x15, 0x88],
+        [0x09, 0xcf, 0x44, 0x3c]
     ], dtype=np.uint8)
 
     new_state = add_round_key(block, key)
@@ -45,6 +45,7 @@ def add_round_key(block, key):
     for i in range(16):
         key_byte = new_key[i]
         xor_byte = block[i] ^ key_byte
+        #print(f'X0R of block:{hex(block[i])} with key:{hex(key_byte)} = {hex(xor_byte)}')
         new_block[i] = xor_byte
     
     return new_block
