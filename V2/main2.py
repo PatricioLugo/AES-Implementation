@@ -4,9 +4,9 @@ from sub_bytes2 import sub_bytes
 from shift_rows2 import shift_rows
 from mix_columns2 import mix_columns
 
-from inverse_sub_bytes2 import inverse_subbytes
-from inverse_shift_rows2 import inv_shiftrows
-from inverse_mix_columns2 import inverse_mixcolumns
+#from inverse_sub_bytes2 import inverse_subbytes
+#from inverse_shift_rows2 import inv_shiftrows
+#from inverse_mix_columns2 import inverse_mixcolumns
 import numpy as np
 
 
@@ -45,20 +45,20 @@ def ask_for_key():
 
 #Función para exportar un archivo .aes
 
+
 #Función para cifrar un bloque
 def cipher_block(input_bytes, expanded_key):
     state = input_bytes
-    print(expanded_key)
-    state = add_round_key(state, expanded_key[0])
+    state = add_round_key(state, expanded_key[0:4])
     for i in range(1, 10):
         state = sub_bytes(state)
         state = shift_rows(state)
         state = mix_columns(state)
-        state = add_round_key(state, expanded_key[i])
+        state = add_round_key(state, expanded_key[i*4, (i+1)*4])
     
     state = sub_bytes(state)
     state = shift_rows(state)
-    state = add_round_key(state, expanded_key[9])
+    state = add_round_key(state, expanded_key[40:44])
     return state
 
 #Función para hacer XOR entre dos bloques de 16 bytes
@@ -86,14 +86,25 @@ def cipher(input_bytes, expanded_key):
 #Función main
 def main(): 
     while True: 
-        selection = input('1 para cifrado, 2 para descifrado: ') #Input en integer
-        match selection:
-            case 1: 
-                filename = input('\n Dame el nombre del archivo a cifrar: ') #filename en string
-                key = ask_for_key() #Lista de ints
-                expanded_key = key_expansion(key) #Matriz de Keys (c/elemento es int)
-                result = cipher(read_file(filename), expanded_key) #Lista de bloques de bytes de 16 bits c/uno
-                write_ciphered_blocks(result, 'output.aes')
+        try:
+            selection = int(input('1 para cifrado, 2 para descifrado: '))#Input en integer
+            match selection:
+                case 1: 
+                    filename = input('\nDame el nombre del archivo a cifrar: ') #filename en string
+                    key = ask_for_key() #Lista de ints
+                    expanded_key = key_expansion(key) #Matriz de Keys (c/elemento es int)
+                    print(expanded_key)
+                    print(expanded_key.shape)
+                    result = cipher(read_file(filename), expanded_key)
+                    write_ciphered_blocks(result, 'output.aes')
+                    break  # Exit loop after encryption
+                case 2:
+                    # Presumably you'd add decryption logic here
+                    break
+                case _:
+                    print("Opción no válida.")
+        except ValueError:
+            print("Por favor ingresa un número válido (1 o 2).")
                 
 
 
