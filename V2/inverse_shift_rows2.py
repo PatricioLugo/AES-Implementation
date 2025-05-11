@@ -6,7 +6,7 @@ OUTPUT: Numpy array 4x4 (state matrix) of integers
 
 import numpy as np
 
-def shift_rows(state): 
+def inv_shiftrows(state): 
 #First row remains unshifted 
     state[1] = np.roll(state[1],1) #Second row shifts 1 to the right
     state[2] = np.roll(state[2],2) #Third row shifts 2 to the right  
